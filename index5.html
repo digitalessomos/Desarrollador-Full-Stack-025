@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cristian Romero - Desarrollador Full-Stack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c; /* Fondo oscuro */
+            color: #e2e8f0; /* Texto claro */
+        }
+        .section-title {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60%;
+            height: 4px;
+            background-color: #63b3ed; /* Color azul para el subrayado */
+            border-radius: 2px;
+        }
+        .card {
+            background-color: #2d3748; /* Fondo de tarjeta más claro */
+            border-radius: 0.75rem; /* Bordes redondeados */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        .project-card img, .video-thumbnail img {
+            border-top-left-radius: 0.75rem;
+            border-top-right-radius: 0.75rem;
+        }
+ 
+        .skill-icon {
+            width: 4rem;
+            height: 4rem;
+            object-fit: contain;
+        }
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Permanece en su lugar */
+            z-index: 1000; /* Se sitúa por encima de todo */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ancho completo */
+            height: 100%; /* Alto completo */
+            overflow: auto; /* Habilitar scroll si es necesario */
+            background-color: rgba(0,0,0,0.8); /* Fondo semi-transparente */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #2d3748;
+            margin: auto;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+            color: #e2e8f0;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #e2e8f0;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Estilos para el efecto Parallax */
+        .parallax-section {
+            position: relative;
+            overflow: hidden; /* Asegura que el contenido no se desborde */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .parallax-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Capa oscura con 70% de opacidad */
+            z-index: 1; /* Por debajo del contenido, por encima de la imagen de fondo o video */
+        }
+
+        .parallax-content {
+            position: relative;
+            z-index: 2; /* Asegura que el contenido esté por encima de la capa */
+        }
+
+        /* Imágenes de fondo para las secciones Parallax */
+        /* #about ya no usa background-image, ahora usa video */
+        /* #ai-skills ya no usa background-image, ahora usa video */
+        /* #youtube-channel ya no usa background-image, ahora usa video */
+        /* #ai-projects ya no usa background-image, ahora usa video */
+       
+
+        /* Estilos para el video de fondo */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0; /* Asegura que el video esté detrás del contenido y la capa oscura */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header y Navegación -->
+    <header class="bg-gray-900 shadow-lg py-4 px-6 fixed w-full z-50">
+        <nav class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white">Cristian Romero</a>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#about" class="text-gray-300 hover:text-white transition duration-300">Acerca de Mí</a></li>
+                <li><a href="#skills" class="text-gray-300 hover:text-white transition duration-300">Habilidades</a></li>
+                <li><a href="#ai-skills" class="text-gray-300 hover:text-white transition duration-300">Habilidades con IA</a></li>
+                <li><a href="#gem-agents" class="text-gray-300 hover:text-white transition duration-300">Agentes GEMs & Prompts</a></li>
+                <li><a href="#youtube-channel" class="text-gray-300 hover:text-white transition duration-300">Mi Canal de YouTube</a></li>
+                <li><a href="#projects" class="text-gray-300 hover:text-white transition duration-300">Proyectos</a></li>
+                <li><a href="#ai-projects" class="text-gray-300 hover:text-white transition duration-300">Proyectos IA</a></li>
+                <li><a href="#education" class="text-gray-300 hover:text-white transition duration-300">Educación</a></li>
+                <li><a href="#contact" class="text-gray-300 hover:text-white transition duration-300">Contacto</a></li>
+            </ul>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+        <!-- Menú móvil -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 mt-4 rounded-lg">
+            <ul class="flex flex-col items-center py-4 space-y-4">
+                <li><a href="#about" class="text-gray-300 hover:text-white transition duration-300 block py-2">Acerca de Mí</a></li>
+                <li><a href="#skills" class="text-gray-300 hover:text-white transition duration-300 block py-2">Habilidades</a></li>
+                <li><a href="#ai-skills" class="text-gray-300 hover:text-white transition duration-300 block py-2">Habilidades con IA</a></li>
+                <li><a href="#gem-agents" class="text-gray-300 hover:text-white transition duration-300 block py-2">Agentes GEMs & Prompts</a></li>
+                <li><a href="#youtube-channel" class="text-gray-300 hover:text-white transition duration-300 block py-2">Mi Canal de YouTube</a></li>
+                <li><a href="#projects" class="text-gray-300 hover:text-white transition duration-300 block py-2">Proyectos</a></li>
+                <li><a href="#ai-projects" class="text-gray-300 hover:text-white transition duration-300 block py-2">Proyectos IA</a></li>
+                <li><a href="#education" class="text-gray-300 hover:text-white transition duration-300 block py-2">Educación</a></li>
+                <li><a href="#contact" class="text-gray-300 hover:text-white transition duration-300 block py-2">Contacto</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Sección Hero/Acerca de Mí -->
+    <section id="about" class="parallax-section h-screen flex items-center justify-center text-center">
+        <!-- Video de fondo -->
+        <video autoplay loop muted playsinline class="video-background" poster="https://placehold.co/1920x1080/1a202c/e2e8f0?text=Video+Background">
+            <source src="v1.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="parallax-content p-8 bg-gray-900 bg-opacity-75 rounded-lg shadow-xl max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-4 animate-fade-in-up">CRISTIAN ROMERO</h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 animate-fade-in-up delay-200">
+                Desarrollador Full-Stack | Creando soluciones sólidas, intuitivas y escalables
+            </p>
+            <p class="text-lg text-gray-400 leading-relaxed animate-fade-in-up delay-400">
+            Con más de una década de experiencia como desarrollador web freelance, 
+            me especializo en la creación de aplicaciones robustas, escalables e intuitivas. 
+        </br>Mi dominio técnico abarca desde el front-end hasta el back-end,
+         con el objetivo de convertir ideas en productos que optimicen las tareas diarias de sus negocios.</p>
+            <div class="mt-8 space-x-4 animate-fade-in-up delay-600">
+                <a href="#projects" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 inline-flex items-center">
+                    Ver Proyectos <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#contact" class="border border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 inline-flex items-center">
+                    Contactar <i class="fas fa-envelope ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Habilidades -->
+    <section id="skills" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Habilidades</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Front-end Skills -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-6">Front-end</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/HTML5_logo_and_wordmark.svg/1200px-HTML5_logo_and_wordmark.svg.png" alt="HTML5" class="skill-icon">
+                            <span class="text-gray-300 mt-2">HTML5</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/CSS3_logo_and_wordmark.svg/1200px-CSS3_logo_and_wordmark.svg.png" alt="CSS3" class="skill-icon">
+                            <span class="text-gray-300 mt-2">CSS3</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png" alt="JavaScript" class="skill-icon">
+                            <span class="text-gray-300 mt-2">JavaScript</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" class="skill-icon">
+                            <span class="text-gray-300 mt-2">React</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Angular_full_color_logo.svg/1200px-Angular_full_color_logo.svg.png" alt="Angular" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Angular</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Vue.js_Logo_2.svg/1200px-Vue.js_Logo_2.svg.png" alt="Vue.js" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Vue.js</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="TypeScript" class="skill-icon">
+                            <span class="text-gray-300 mt-2">TypeScript</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fd7981ce59387f75a7b.svg" alt="Tailwind CSS" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Tailwind CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back-end Skills -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-green-400 mb-6">Back-end</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node.js" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Node.js</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/1200px-Java_programming_language_logo.svg.png" alt="Java" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Java</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/PostgreSQL_logo.svg" alt="PostgreSQL" class="skill-icon">
+                            <span class="text-gray-300 mt-2">PostgreSQL</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/PHP-logo.svg/1200px-PHP-logo.svg.png" alt="PHP" class="skill-icon">
+                            <span class="text-gray-300 mt-2">PHP</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/1200px-MongoDB_Logo.svg.png" alt="MongoDB" class="skill-icon">
+                            <span class="text-gray-300 mt-2">MongoDB</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1200px-Python-logo-notext.svg.png" alt="Python" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Python</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Firebase_Logo.svg" alt="Firebase" class="skill-icon">
+                            <span class="text-gray-300 mt-2">Firebase</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png" alt="GitHub" class="skill-icon">
+                            <span class="text-gray-300 mt-2">GitHub</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soft Skills & Otros -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-purple-400 mb-6">Habilidades Blandas & Otros</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-comments text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Comunicación</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-users text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Trabajo en Equipo</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-lightbulb text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Resolución de Problemas</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-globe text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Idiomas (Inglés, Francés)</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-project-diagram text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Gestión de Proyectos</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-cloud text-blue-300 text-4xl mb-2"></i>
+                            <span class="text-gray-300 mt-2">Despliegue en la Nube</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Habilidades con IA -->
+    <section id="ai-skills" class="parallax-section py-16 flex items-center justify-center text-center">
+        <!-- Video de fondo para Habilidades con IA -->
+        <video autoplay loop muted playsinline class="video-background" poster="https://placehold.co/1920x1080/1a202c/e2e8f0?text=Video+Habilidades+IA">
+            <source src="v2.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="parallax-content container mx-auto px-6 p-8 rounded-lg shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Habilidades con IA</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- IAs Video -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-blue-400 mb-6">IA para Video</h3>
+                    <ul class="list-disc list-inside text-gray-300 text-left space-y-2">
+                        <li>Generación de videos a partir de imagen o Prompts
+                            <ul class="list-circle list-inside ml-4 text-gray-400">
+                                <li>DigenIA</li>
+                                <li>Roboneo</li>
+                                <li>Dreamina</li>
+                                <li>SandIA</li>
+                                <li>HailuoIA</li>
+                            </ul>
+                        </li>
+                        <li>Generación de videos largos:
+                            <ul class="list-circle list-inside ml-4 text-gray-400">
+                                <li>CapCut AI Creator</li>
+                                <li>OpusClip</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- IAs Imágenes -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-green-400 mb-6">IA para Imágenes</h3>
+                    <ul class="list-disc list-inside text-gray-300 text-left space-y-2">
+                        <li>Image-FX</li>
+                        <li>App.leonardo.ai</li>
+                        <li>Gemini</li>
+                    </ul>
+                </div>
+
+                <!-- IA Web Apps -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-purple-400 mb-6">IA para Web Apps</h3>
+                    <ul class="list-disc list-inside text-gray-300 text-left space-y-2">
+                        <li>Gemini Canvas</li>
+                        <li>Deepsite</li>
+                        <li>AI Studio Google</li>
+                    </ul>
+                </div>
+
+                <!-- IA Audios y Música -->
+                <div class="card p-6">
+                    <h3 class="text-2xl font-semibold text-red-400 mb-6">IA para Audios y Música</h3>
+                    <ul class="list-disc list-inside text-gray-300 text-left space-y-2">
+                        <li>**Música (40-50s):** MusicFX</li>
+                        <li>**Música (20-30s):** Huggingface.co</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Nueva Sección: Agentes GEMs & Prompts -->
+   <section id="gem-agents" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Agentes GEMs & Prompts</h2>
+
+            <div class="max-w-3xl mx-auto text-left space-y-6">
+                <p class="text-gray-300">
+                    Cuento con la capacidad de orquestar y gestionar un equipo de <strong class="text-blue-400">10 agentes especializados (GEMs de Gemini)</strong>, cada uno dedicado a una función específica. Estos agentes son fundamentales para la optimización de flujos de trabajo y la generación de contenido de alta calidad.
+                </p>
+                <div class="flex justify-center space-x-4 mb-8"> <!-- Contenedor para los botones -->
+                    <button onclick="openModal('modal-gem-agents')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105 inline-flex items-center">
+                        Ver Agentes <i class="fas fa-robot ml-2"></i>
+                    </button>
+                    <button onclick="openModal('modal-more-info')" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105 inline-flex items-center">
+                        Prompts <i class="fas fa-info-circle ml-2"></i>
+                    </button>
+                </div>
+                <!--  
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                   Tarjeta 1: Generación de Informes Diarios  
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-semibold text-blue-400 mb-4">Generación de Informes Diarios</h3>
+                        <p class="text-gray-300">
+                            Cada agente me proporciona informes detallados correspondientes a su especialidad o sector. Estos informes incluyen indicaciones y aprendizajes clave almacenados en sus memorias, lo que permite una visión profunda y actualizada de cada área.
+                        </p>
+                    </div>
+                     Tarjeta 2: Aplicación Práctica 
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-semibold text-green-400 mb-4">Aplicación Práctica</h3>
+                        <p class="text-gray-300">
+                            Un ejemplo claro es el <strong class="text-green-400">agente de Cuentos y Narrativas</strong>, que me asiste activamente en la construcción de historias y la formulación de frases impactantes para mi canal de YouTube. Su especialización garantiza la coherencia y el atractivo narrativo.
+                        </p>
+                    </div>
+                    Tarjeta 3: Optimización de Resultados
+                    <div class="card p-6">
+                        <h3 class="text-2xl font-semibold text-purple-400 mb-4">Optimización de Resultados</h3>
+                        <p class="text-gray-300">
+                            Para asegurar la excelencia, comparo las opiniones y los resultados arrojados por los diferentes agentes. Este proceso me permite obtener la mejor solución posible y comprender cómo sus "memorias" influyen en la calidad y pertinencia de las respuestas.
+                        </p>
+                    </div> 
+                </div>-->
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Nueva Sección: Mi Canal de YouTube (IA Shorts) -->
+    <section id="youtube-channel" class="parallax-section py-16 flex items-center justify-center text-center">
+        <!-- Video de fondo para Mi Canal de YouTube (IA Shorts) -->
+        <video autoplay loop muted playsinline class="video-background" poster="https://placehold.co/1920x1080/1a202c/e2e8f0?text=Video+YouTube">
+            <source src="v3.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="parallax-content container mx-auto px-6 p-8 bg-gray-900 bg-opacity-75 rounded-lg shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Mi Canal de YouTube (IA Shorts)</h2>
+
+            <div class="mb-12">
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <img src="yt/perfil.png" alt="Perfil de YouTube SueñosIAgoesReal" class="rounded-full w-32 h-32 object-cover mb-4 border-4 border-blue-500">
+                    <h3 class="text-3xl font-bold text-white">@sueñosIA</h3>
+                    <p class="text-gray-400 text-lg">SueñosIAgoesReal | 44 suscriptores | 15 videos</p>
+                    <a href="https://www.youtube.com/@sueñosIA" target="_blank" class="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105 inline-flex items-center">
+                        Visitar Canal <i class="fab fa-youtube ml-2"></i>
+                    </a>
+                </div>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Explora mi canal de YouTube donde comparto una serie de videos cortos, completamente generados con diversas herramientas de Inteligencia Artificial. ¡Una muestra de cómo la IA puede dar vida a historias visuales impactantes!
+                </p>
+            </div>
+
+            <!-- Playlist 1: Duelo de Titanes IA -->
+            <div class="mb-12 text-left">
+                <h3 class="text-3xl font-semibold text-white mb-6 section-title">Duelo de Titanes IA</h3>
+                <p class="text-400 mb-6">
+                    Duelo de Titanes IA: Una saga épica de rivalidad animal generada por IA. Tigres y gorilas luchan por venganza y dominio en una brutal guerra territorial. ¡Supervivencia, poder y conquista!
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Video 1 (Duelo de Titanes IA - Top 1) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/1.png" alt="Cuando la calma y los amigos salvan tu día..." class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">🦍Cuando la calma y los amigos salvan tu día</h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~2K</p>
+                            <a href="https://www.youtube.com/shorts/a9AuuVJG0AM" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                    <!-- Video 2 (Duelo de Titanes IA - Top 2) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/2.png" alt="No hay tiempo que perder" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">⏰El tic-tac de la angustia: el tiempo se agota</h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~1.9K</p>
+                            <a href="https://www.youtube.com/shorts/ViaUEKvFA5c" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                    <!-- Video 3 (Duelo de Titanes IA - Top 3) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/3.png" alt="El tic-tac de la angustia" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">🐅La Última Frontera: Donde el Final Comienza</h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~1.3K</p>
+                            <a href="https://www.youtube.com/shorts/3sYGm8-U90U" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/playlist?list=PLyKoMvUBnnryCZdljDJ2XVeDF9KKf0Cc6" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                    Ver Playlist Completa <i class="fas fa-external-link-alt ml-2"></i>
+                </a>
+            </div>
+
+            <!-- Playlist 2: Duelo de Titanes IA: La Ascensión de los ... -->
+            <div class="mb-12 text-left">
+                <h3 class="text-3xl font-semibold text-white mb-6 section-title">Duelo de Titanes IA: La Ascensión de los Ojos Blancos</h3>
+                <p class="text-gray-400 mb-6">
+                    Esta playlist explora la fascinante narrativa de "La Ascensión de los Ojos Blancos", una serie de videos cortos que profundizan en el desarrollo de personajes y la evolución de la historia.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Video 1 (La Ascensión de los Ojos Blancos - Top 1) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/6.png" alt="REVELADO" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">El Tigre de Ojos Blancos: un Poder Imposible 🐅👁️‍🗨️💥👑</h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~1.6K</p>
+                            <a href="https://www.youtube.com/shorts/A8n_hAMzRRA" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                    <!-- Video 2 (La Ascensión de los Ojos Blancos - Top 2) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/5.png" alt="HOY NO SERA EL FINAL" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">Rey Caído? 🦍💔 El Tigre IA Desata Habilidades Jamás Vistas 🐅✨</h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~1.9K</p>
+                            <a href="https://www.youtube.com/shorts/0lRe_V2QBP8" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                    <!-- Video 3 (La Ascensión de los Ojos Blancos - Top 3) -->
+                    <div class="card overflow-hidden">
+                        <img src="yt/4.png" alt="La Misericordia de la Máquina" class="w-full h-40 object-cover">
+                        <div class="p-4">
+                            <h4 class="text-lg font-semibold text-white">La Misericordia de la Máquina: El Gorila Rey al Borde de la Muerte 🤖🦍💔 </h4>
+                            <p class="text-gray-400 text-sm mt-1">Vistas: ~2.1K</p>
+                            <a href="https://www.youtube.com/shorts/vwH3AEu4v_E" target="_blank" class="text-blue-400 hover:underline text-sm mt-2 block">Ver Video</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://www.youtube.com/playlist?list=PLyKoMvUBnnrzt3zA1FEVdudOVamnwnkqn" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                    Ver Playlist Completa <i class="fas fa-external-link-alt ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Proyectos -->
+    <section id="projects" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Proyectos Destacados</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+               <!-- Proyecto 1: Tienda Virtual -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgProy/1.png" alt="Tienda Virtual" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Proyecto de Tienda Virtual</h3>
+                        <p class="text-gray-400 mb-4">
+                            Los consumidores digitales pueden recibir sus compras en la puerta de su casa, entregas a tiempo y una logística eficiente para atraer más consumidores.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: Angular</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: API-Firebase</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: Firebase DB</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-tienda-virtual')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto 2: Gestión de Pedidos y Entregas -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgProy/6.png" alt="Gestión de Pedidos y Entregas" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Gestión de Pedidos y Entregas en Repartos de Agua</h3>
+                        <p class="text-gray-400 mb-4">
+                            Gestionar puntos de entregas, generación automática de rutas, y registro de clientes es lo principal que brinda esta web-app mejorando la experiencia del cliente en sus operaciones diarias.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: Angular</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: API-Firebase</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: Firebase DB</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-gestion-pedidos')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto 3: Comercio Electrónico con BD en FB -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgProy/5.png" alt="Comercio Electrónico con BD en FB" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Proyecto Web para Comercio Electrónico con BD en FB</h3>
+                        <p class="text-gray-400 mb-4">
+                            Aumentar las ventas, reducir los costos operativos y facilitar el proceso de compra mediante la implementación de una sólida solución de comercio electrónico.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: Fragment (Comportamientos y partes de la interfaz de usuario)</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: API-fetch API, LocalStorage API</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: LocalStorage</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-ecommerce-fb')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 
+                <div class="project-card card overflow-hidden">
+                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=Negocio+Digital" alt="Negocio Digital 24/7" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Proyecto de Negocio Digital 24/7</h3>
+                        <p class="text-gray-400 mb-4">
+                            Herramienta digital adaptada a las necesidades del negocio. Sistema personalizado en base a una visión integral del negocio, con el foco puesto en las personas y en sintonía con las últimas tendencias tecnológicas y culturales.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: HTML CSS JS: InnerHTML, sort, JSON Array</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: Firebase-firestore (contact & login validating)</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: Firebase collections</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-negocio-digital')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                 
+                <div class="project-card card overflow-hidden">
+                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=Bebidas+Online" alt="Venta de Bebidas Online 24/7" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Venta de Bebidas Online 24/7</h3>
+                        <p class="text-gray-400 mb-4">
+                            Reducí costos, interactuar con tus clientes, expandir su productividad y optimizar sus procesos, recursos y costos sin tener que ampliar su personal a través de la implementación de esta herramienta digital.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: HTML CSS JS: InnerHTML, sort, JSON Array</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: Firebase API, LocalStorage API</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: Firebase Database(), LocalStorage</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-bebidas-online')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                 
+                <div class="project-card card overflow-hidden">
+                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=Jardineria+Ya" alt="Jardinería Ya" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Jardinería Ya</h3>
+                        <p class="text-gray-400 mb-4">
+                            Mi servicio de diseño y desarrollo de sitios web aceleró su innovación, ingresos y sostenibilidad en base a metodologías y tecnologías de avanzada.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Frontend: HTML CSS JS</span>
+                            <span class="bg-green-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Backend: Firebase API para la sección de contacto</span>
+                            <span class="bg-purple-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Base de Datos: Firebase Storage</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-jardineria')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección: Proyectos Destacados IA -->
+    <section id="ai-projects" class="parallax-section py-16 flex items-center justify-center text-center">
+        <!-- Video de fondo para Proyectos Destacados IA -->
+        <video autoplay loop muted playsinline class="video-background" poster="https://placehold.co/1920x1080/1a202c/e2e8f0?text=Video+Proyectos+IA">
+            <source src="v4.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="parallax-content container mx-auto px-6 p-8 rounded-lg shadow-xl">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Proyectos Destacados IA</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Proyecto IA 1: ¿Quién Paga ¡La Ruleta Decide! -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgIAproy/1.png" alt="¿Quién Paga ¡La Ruleta Decide!" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">¿Quién Paga ¡La Ruleta Decide!</h3>
+                        <p class="text-gray-400 mb-4">
+                            Una divertida aplicación de toma de decisiones que utiliza IA para generar resultados dinámicos y justos, ideal para grupos y amigos.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Desarrollado con: Gemini Canvas</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-ruleta-ia')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto IA 2: App Editor de Imagen -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgIAproy/2.jpg" alt="App Editor de Imagen" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">App Editor de Imagen</h3>
+                        <p class="text-gray-400 mb-4">
+                            Un potente editor de imágenes con funcionalidades avanzadas impulsadas por IA, como mejora automática, eliminación de objetos y transferencia de estilo.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Desarrollado con: Google AI Studio</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-editor-imagen-ia')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto IA 3: App Para elegir La Mejor Tactica en Free Fire -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgIAproy/3.jpg" alt="App Para elegir La Mejor Tactica en Free Fire" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">App Para elegir La Mejor Tactica en Free Fire</h3>
+                        <p class="text-gray-400 mb-4">
+                            Una aplicación inteligente que analiza datos de juego para sugerir las mejores tácticas en Free Fire, mejorando la estrategia y el rendimiento del jugador.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Desarrollado con: Gemini Canvas</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-freefire-ia')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto IA 4: pop Up ofertas IA Studio -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgIAproy/4.jpg" alt="pop Up ofertas IA Studio" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Pop Up de Ofertas (IA Studio)</h3>
+                        <p class="text-gray-400 mb-4">
+                            Un sistema de pop-ups dinámicos y personalizados para ofertas, diseñado para maximizar la conversión utilizando algoritmos de IA para la segmentación de usuarios.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Desarrollado con: Google AI Studio</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-popup-ia')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Proyecto IA 5: shopping Cart para Ropa (LocalStorage y Whatsapp) -->
+                <div class="project-card card overflow-hidden">
+                    <img src="imgIAproy/5.webp" alt="shopping Cart para Ropa (LocalStorage y Whatsapp)" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-3">Carrito de Compras para Ropa (con IA)</h3>
+                        <p class="text-gray-400 mb-4">
+                            Un carrito de compras robusto para tiendas de ropa, con integración de LocalStorage y WhatsApp, y mejoras impulsadas por IA para recomendaciones personalizadas.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-0.5 rounded-full">Desarrollado con: Gemini Canvas</span>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openModal('modal-carrito-ia')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 inline-flex items-center">
+                            Ver Detalles <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Educación -->
+     
+ <section id="education" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Educación</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Certificado 1 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/cole2.jpg" alt="Certificado Técnico en Informática Personal y Profesional" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Técnico en Informática Personal y Profesional</h3>
+                    <p class="text-gray-400">Juan XXIII</p>
+                </div>
+                <!-- Certificado 2 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/cole1.jpg" alt="Certificado Modalidad Producción Bienes y Servicios" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Modalidad Producción Bienes y Servicios</h3>
+                    <p class="text-gray-400">Juan XXIII</p>
+                </div>
+                <!-- Certificado 3 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/3.png" alt="Certificado Google Analytics para Principiantes" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Google Analytics para Principiantes</h3>
+                    <p class="text-gray-400">Google Analytics Academy</p>
+                </div>
+                <!-- Certificado 4 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/4.jpg" alt="Certificado Inglés B1 B2 C1" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Inglés B1 B2 C1</h3>
+                    <p class="text-gray-400">OM Personal</p>
+                </div>
+                <!-- Certificado 5 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/5.jpg" alt="Certificado Avanzado Negocios" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Avanzado Negocios</h3>
+                    <p class="text-gray-400">OM Personal</p>
+                </div>
+                <!-- Certificado 6 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/6.png" alt="Certificado Francés A1" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Francés A1</h3>
+                    <p class="text-gray-400">AulaFácil</p>
+                </div>
+                <!-- Certificado 7 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/7.png" alt="Certificado Francés A2" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">Francés A2</h3>
+                    <p class="text-gray-400">Edutin Academy</p>
+                </div>
+                <!-- Certificado 8 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/8.jpg" alt="Certificado Inglés B2" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">STACK MEAN</h3>
+                    <p class="text-gray-400">Udemy (Victor Robles)</p>
+                </div>
+                <!-- Certificado 9 -->
+                <div class="card p-6 flex flex-col items-center">
+                    <img src="imgCert/9.png" alt="Certificado Curso de React" class="w-full h-40 object-cover rounded-md mb-4">
+                    <h3 class="text-xl font-semibold text-white mb-2">#SeProgramar</h3>
+                    <p class="text-gray-400">Argentina Programa</p>
+                </div>
+             </div>
+        </div>
+    </section>
+    <!-- Sección de Contacto -->
+<section id="contact" class="parallax-section py-16 flex items-center justify-center text-center">
+        <!-- Video de fondo para Contacto -->
+        <video autoplay loop muted playsinline class="video-background" poster="https://placehold.co/1920x1080/1a202c/e2e8f0?text=Video+Contacto">
+            <source src="v6.mp4" type="video/mp4">
+            Tu navegador no soporta la etiqueta de video.
+        </video>
+        <div class="parallax-content container mx-auto px-6 p-8 rounded-lg shadow-xl"><!--esto fue sacad bg-gray-900 bg-opacity-75 -->
+            <h2 class="text-4xl font-bold text-white mb-12 section-title mx-auto">Contacto</h2>
+
+            <div class="max-w-xl mx-auto bg-gray-900 p-8 rounded-lg shadow-xl">
+                <p class="text-gray-300 mb-4">
+                    Estoy disponible para nuevas oportunidades y colaboraciones. No dudes en contactarme.
+                </p>
+                <div class="space-y-1 mb-2">
+                    <div class="flex items-center justify-center text-gray-300">
+                        <i class="fas fa-envelope text-blue-400 text-2xl mr-3"></i>
+                        <span>ccristiandarioromero@gmail.com</span>
+                    </div>
+                    <div class="flex items-center justify-center text-gray-300">
+                        <i class="fas fa-phone text-blue-400 text-2xl mr-3"></i>
+                        <span>+54 9 11 59665917</span>
+                    </div>
+                    <div class="flex items-center justify-center text-gray-300">
+                        <i class="fas fa-map-marker-alt text-blue-400 text-2xl mr-3"></i>
+                        <span>Buenos Aires, Argentina</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-center space-x-6">
+                     <!-- Sección de Contacto 
+                    <a href="https://www.linkedin.com/in/cristianromero" target="_blank" class="text-gray-400 hover:text-blue-400 transition duration-300">
+                        <i class="fab fa-linkedin text-4xl"></i>
+                    </a>-->
+                    <a href="https://github.com/cristianromero" target="_blank" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-github text-4xl"></i>
+                    </a>
+                   <!--  <a href="https://twitter.com/cristianromero" target="_blank" class="text-gray-400 hover:text-blue-300 transition duration-300">
+                        <i class="fab fa-twitter text-4xl"></i>-->
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-6 text-center text-gray-500 text-sm">
+        <p>&copy; 2025 Cristian Romero. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Modales de Proyectos -->
+    <!-- Modal Tienda Virtual -->
+    <div id="modal-tienda-virtual" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-tienda-virtual')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Proyecto de Tienda Virtual</h3>
+            <p class="text-gray-300 mb-4">
+                Este proyecto de tienda virtual está diseñado para ofrecer una experiencia de compra en línea fluida y eficiente. Permite a los consumidores digitales recibir sus compras directamente en la puerta de su casa, con entregas a tiempo y una logística optimizada para atraer y retener a más clientes.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** Angular</li>
+                <li>**Backend:** API-Firebase</li>
+                <li>**Base de Datos:** Firebase Database</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Interfaz de usuario intuitiva y responsive.</li>
+                <li>Gestión de productos y categorías.</li>
+                <li>Proceso de carrito de compras y checkout seguro.</li>
+                <li>Integración con pasarelas de pago.</li>
+                <li>Sistema de seguimiento de pedidos.</li>
+                <li>Panel de administración para gestión de inventario y usuarios.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Gestión de Pedidos y Entregas -->
+    <div id="modal-gestion-pedidos" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-gestion-pedidos')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Gestión de Pedidos y Entregas en Repartos de Agua</h3>
+            <p class="text-gray-300 mb-4">
+                Esta web-app está diseñada para optimizar la gestión de pedidos y entregas en negocios de reparto de agua. Sus funcionalidades principales incluyen la gestión de puntos de entrega, la generación automática de rutas eficientes y el registro detallado de clientes, mejorando significativamente la experiencia del cliente y la eficiencia operativa diaria.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** Angular</li>
+                <li>**Backend:** API-Firebase</li>
+                <li>**Base de Datos:** Firebase Database</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Gestión de clientes y sus direcciones.</li>
+                <li>Registro y seguimiento de pedidos.</li>
+                <li>Optimización de rutas de entrega.</li>
+                <li>Historial de pedidos por cliente.</li>
+                <li>Notificaciones de entrega.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Comercio Electrónico con BD en FB -->
+    <div id="modal-ecommerce-fb" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-ecommerce-fb')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Proyecto Web para Comercio Electrónico con BD en FB</h3>
+            <p class="text-gray-300 mb-4">
+                Este proyecto de comercio electrónico busca aumentar las ventas, reducir los costos operativos y facilitar el proceso de compra mediante la implementación de una sólida solución de comercio electrónico. Utiliza tecnologías frontend basadas en fragmentos para una interfaz de usuario modular y eficiente.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** Fragment (Comportamientos y partes de la interfaz de usuario)</li>
+                <li>**Backend:** API-fetch API, LocalStorage API</li>
+                <li>**Base de Datos:** LocalStorage</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Catálogo de productos dinámico.</li>
+                <li>Funcionalidad de añadir al carrito.</li>
+                <li>Gestión de sesiones de usuario con LocalStorage.</li>
+                <li>Interfaz de usuario modular y reutilizable.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Negocio Digital 24/7 -->
+    <div id="modal-negocio-digital" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-negocio-digital')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Proyecto de Negocio Digital 24/7</h3>
+            <p class="text-gray-300 mb-4">
+                Esta herramienta digital está diseñada para adaptarse a las necesidades específicas de un negocio, ofreciendo un sistema personalizado basado en una visión integral, con el foco puesto en las personas y en sintonía con las últimas tendencias tecnológicas y culturales.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** HTML, CSS, JavaScript (InnerHTML, sort, JSON Array)</li>
+                <li>**Backend:** Firebase-firestore (contact & login validating)</li>
+                <li>**Base de Datos:** Firebase collections</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Formulario de contacto integrado con Firebase.</li>
+                <li>Sistema de autenticación de usuarios.</li>
+                <li>Visualización y gestión de datos dinámicos.</li>
+                <li>Interfaz de usuario interactiva.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Venta de Bebidas Online 24/7 -->
+    <div id="modal-bebidas-online" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-bebidas-online')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Venta de Bebidas Online 24/7</h3>
+            <p class="text-gray-300 mb-4">
+                Esta herramienta digital tiene como objetivo reducir costos, facilitar la interacción con los clientes, expandir la productividad y optimizar los procesos y recursos sin necesidad de ampliar el personal. Ofrece un sistema de venta de bebidas en línea disponible las 24 horas del día, los 7 días de la semana.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** HTML, CSS, JavaScript (InnerHTML, sort, JSON Array)</li>
+                <li>**Backend:** Firebase API, LocalStorage API</li>
+                <li>**Base de Datos:** Firebase Database(), LocalStorage</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Catálogo de bebidas con opciones de filtrado y ordenamiento.</li>
+                <li>Funcionalidad de carrito de compras persistente.</li>
+                <li>Integración con Firebase para gestión de datos.</li>
+                <li>Experiencia de usuario fluida y accesible en todo momento.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal Jardinería Ya -->
+    <div id="modal-jardineria" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-jardineria')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Jardinería Ya</h3>
+            <p class="text-gray-300 mb-4">
+                Este proyecto de servicio de diseño y desarrollo de sitios web tiene como objetivo acelerar la innovación, los ingresos y la sostenibilidad de un negocio de jardinería, utilizando metodologías y tecnologías avanzadas.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Frontend:** HTML, CSS, JavaScript</li>
+                <li>**Backend:** Firebase API para la sección de contacto</li>
+                <li>**Base de Datos:** Firebase Storage</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Galería de proyectos de jardinería.</li>
+                <li>Formulario de contacto directo con integración Firebase.</li>
+                <li>Diseño responsive para una visualización óptima en cualquier dispositivo.</li>
+                <li>Información detallada sobre los servicios ofrecidos.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modales de Proyectos IA -->
+    <!-- Modal ¿Quién Paga ¡La Ruleta Decide! -->
+    <div id="modal-ruleta-ia" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-ruleta-ia')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">¿Quién Paga ¡La Ruleta Decide!</h3>
+            <p class="text-gray-300 mb-4">
+                Esta aplicación lúdica utiliza la inteligencia artificial para simular una ruleta de decisiones, ideal para resolver dilemas cotidianos de forma divertida y equitativa. Su motor de IA asegura resultados impredecibles y variados.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Desarrollado con:** Gemini Canvas</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Interfaz de ruleta interactiva.</li>
+                <li>Generación de resultados aleatorios impulsada por IA.</li>
+                <li>Opciones personalizables para diferentes escenarios.</li>
+                <li>Experiencia de usuario sencilla y entretenida.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal App Editor de Imagen -->
+    <div id="modal-editor-imagen-ia" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-editor-imagen-ia')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">App Editor de Imagen</h3>
+            <p class="text-gray-300 mb-4">
+                Un editor de imágenes avanzado que integra capacidades de inteligencia artificial para transformar y mejorar fotografías. Permite realizar ediciones complejas con facilidad, como ajuste automático de color, eliminación de fondos y aplicación de filtros inteligentes.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Desarrollado con:** Google AI Studio</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Herramientas de edición básicas y avanzadas.</li>
+                <li>Funcionalidades de mejora de imagen impulsadas por IA.</li>
+                <li>Interfaz intuitiva para usuarios de todos los niveles.</li>
+                <li>Capacidad de exportar imágenes en varios formatos.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal App Para elegir La Mejor Tactica en Free Fire -->
+    <div id="modal-freefire-ia" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-freefire-ia')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">App Para elegir La Mejor Tactica en Free Fire</h3>
+            <p class="text-gray-300 mb-4">
+                Esta aplicación utiliza algoritmos de inteligencia artificial para analizar patrones de juego y ofrecer recomendaciones estratégicas personalizadas para Free Fire. Ayuda a los jugadores a optimizar sus tácticas y mejorar su rendimiento en el campo de batalla.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Desarrollado con:** Gemini Canvas</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Análisis de juego en tiempo real.</li>
+                <li>Sugerencias de tácticas basadas en IA.</li>
+                <li>Consejos personalizados para diferentes estilos de juego.</li>
+                <li>Interfaz fácil de usar para jugadores.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal pop Up ofertas IA Studio -->
+    <div id="modal-popup-ia" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-popup-ia')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Pop Up de Ofertas (IA Studio)</h3>
+            <p class="text-gray-300 mb-4">
+                Un sistema de pop-ups dinámicos y personalizados para ofertas, diseñado para maximizar la conversión utilizando algoritmos de IA para la segmentación de usuarios.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Desarrollado con:** Google AI Studio</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Personalización de ofertas en tiempo real.</li>
+                <li>Segmentación de usuarios avanzada.</li>
+                <li>Diseño de pop-ups adaptable y atractivo.</li>
+                <li>Integración sencilla con plataformas web existentes.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal shopping Cart para Ropa (LocalStorage y Whatsapp) -->
+    <div id="modal-carrito-ia" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('modal-carrito-ia')">&times;</span>
+            <h3 class="text-3xl font-bold text-white mb-4">Carrito de Compras para Ropa (con IA)</h3>
+            <p class="text-gray-300 mb-4">
+                Este proyecto de carrito de compras para tiendas de ropa incorpora funcionalidades de IA para mejorar la experiencia del usuario, como recomendaciones de productos personalizadas. Permite guardar el carrito en LocalStorage y facilita la comunicación con el vendedor a través de WhatsApp.
+            </p>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Tecnologías Utilizadas:</h4>
+            <ul class="list-disc list-inside text-gray-300 mb-4">
+                <li>**Desarrollado con:** Gemini Canvas</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-blue-400 mb-2">Características Principales:</h4>
+            <ul class="list-disc list-inside text-gray-300">
+                <li>Gestión de productos en el carrito.</li>
+                <li>Persistencia de datos con LocalStorage.</li>
+                <li>Recomendaciones de productos impulsadas por IA.</li>
+                <li>Integración directa con WhatsApp para pedidos y consultas.</li>
+            </ul>
+        </div>
+    </div>
+    
+<!-- Nuevo Modal para Agentes GEMs -->
+<div id="modal-gem-agents" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('modal-gem-agents')">&times;</span>
+        <h3 class="text-3xl font-bold text-white mb-4">Agentes GEMs</h3>
+        <ul class="list-disc list-inside text-gray-300 space-y-2">
+            <li>Aprendizajes simples</li>
+            <li>Especialista de RRSS</li>
+            <li>Experto en Cuentos_Frases_Guion</li>
+            <li>Experta en Video Juegos</li>
+            <li>Experta en Prompts</li>
+            <li>Especialista de marketing en tiendas online</li>
+            <li>Creador en Nichos YT</li>
+            <li>Experto 2 en Cuentos Guión Frases</li>
+            <li>Experta Algoritmos YT y Creadora de Contenido</li>
+            <li>Creador de ProyectosWeb</li>
+            </ul>
+    </div>
+</div>
+<!-- Nuevo Modal para Más Información (NotebookLM y Prompts) -->
+<div id="modal-more-info" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal('modal-more-info')">&times;</span>
+        <h3 class="text-3xl font-bold text-white mb-4">Información Adicional</h3>
+        <ul class="list-disc list-inside text-gray-300 space-y-3">
+            <li>
+                <strong class="text-white">Integración con NotebookLM:</strong> Además del uso de agentes, aprovecho las capacidades de <strong class="text-purple-400">NotebookLM</strong> para organizar, analizar y sintetizar información compleja, potenciando aún más la eficiencia en la gestión del conocimiento.
+            </li>
+            <li>
+                <strong class="text-white">Creador Profesional de Prompts:</strong> Dispongo de un creador personalizado y profesional de prompts. Esta herramienta es sumamente efectiva en la generación de instrucciones precisas y eficientes, garantizando que las distintas IAs reciban las indicaciones óptimas para producir los resultados deseados.
+            </li>
+        </ul>
+    </div>
+</div>
+
+    <script>
+        // Lógica para el menú móvil
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+
+        // Lógica para los modales
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
